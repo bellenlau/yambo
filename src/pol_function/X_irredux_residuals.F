@@ -72,7 +72,9 @@ subroutine X_irredux_residuals(Xen,Xk,X,Dip,i_cg,iq,Xo_res,Xo_scatt,work,lwork)
  call timing('issue2',OPR='stop')
  call timing('issue3',OPR='start')
  Z_        = cONE
+ !DEV_ACC kernels
  Xo_res    = cZERO
+ !DEV_ACC end kernels
  call timing('issue3',OPR='stop')
  call timing('memset',OPR='start')
  call devxlib_memset_d(Xo_res,cZERO)
