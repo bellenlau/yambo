@@ -16134,7 +16134,7 @@ fi
 
 use_int_cuda_libs="no"
 use_gpu_libs="no"
-enable_nvtx=no
+#enable_nvtx=no
 DEVXLIB_CUDALIBS=""
 DEVXLIBLIB_FLAGS=""
 GPU_LIBS=""
@@ -16310,21 +16310,10 @@ fi
 ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
 ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_fc_compiler_gnu
-
-   if test "x$have_cudafor" != "xyes"; then
+   if test "x$have_cudafor" != "xyes" ; then
       as_fn_error $? "You do not have the cudafor module. Are you using a PGI/NVIDIA compiler?" "$LINENO" 5
    fi
    #
-   if ! test x"$enable_nvtx" = "xno" ; then
-     #
-     if test x"$enable_nvtx" = "xyes" ; then
-        def_gpu="$def_gpu -D_NVTX"
-        GPU_FLAGS="$GPU_FLAGS -lnvToolsExt"
-     elif ! test x"$enable_nvtx" = "x" ; then
-        def_gpu="$def_gpu -D_NVTX"
-        GPU_FLAGS="$GPU_FLAGS -L$enable_nvtx/lib64 -lnvToolsExt"
-     fi
-   fi
 fi
 #
 # Openacc
@@ -16358,6 +16347,16 @@ if test x"$enable_openacc" != "xno" ; then
       # -gpu=cc${with_cuda_cc},cuda${with_cuda_runtime}
    esac
    #
+fi
+#
+# NVTX
+#
+if test x"$enable_nvtx" = "xyes" ; then
+        def_gpu="$def_gpu -D_NVTX"
+        GPU_FLAGS="$GPU_FLAGS -lnvToolsExt"
+elif ! test x"$enable_nvtx" = "x" ; then
+        def_gpu="$def_gpu -D_NVTX"
+        GPU_FLAGS="$GPU_FLAGS -L$enable_nvtx/lib64 -lnvToolsExt"
 fi
 #
 # OpenMP5

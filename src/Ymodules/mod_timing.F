@@ -13,6 +13,7 @@ MODULE timing_m
  USE pars,          ONLY:SP,DP,lchlen
  USE openmp,        ONLY:master_thread
  USE stderr,        ONLY:log_as_a_file
+ USE nvtx_yambo
  !
  IMPLICIT NONE
  PRIVATE
@@ -300,6 +301,7 @@ MODULE timing_m
      call cti(obj%start)
      obj%running = .TRUE.
      obj%call_number = obj%call_number + 1
+     call nvtxStartRange(TRIM(obj%name),obj%indx)
    END SUBROUTINE clock_start
    !
    SUBROUTINE clock_stop(obj)
@@ -313,6 +315,7 @@ MODULE timing_m
      call cti(obj%stop)
      obj%total_time = obj%total_time + real(obj%stop-obj%start,DP)
      obj%running = .FALSE.
+     call nvtxEndRange()
    END SUBROUTINE clock_stop
    !
    SUBROUTINE clock_update(obj)

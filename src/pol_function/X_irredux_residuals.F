@@ -29,6 +29,7 @@ subroutine X_irredux_residuals(Xen,Xk,X,Dip,i_cg,iq,Xo_res,Xo_scatt,work,lwork)
  use vec_operate,   ONLY:v_norm
  use collision_el,  ONLY:elemental_collision
  use devxlib,       ONLY:devxlib_memcpy_d2d,devxlib_conjg,devxlib_memset_d
+ use timing_m,      ONLY:timing
  !
  implicit none
  !
@@ -61,13 +62,22 @@ subroutine X_irredux_residuals(Xen,Xk,X,Dip,i_cg,iq,Xo_res,Xo_scatt,work,lwork)
  !
  complex(SP)  :: DIP_projected,field_dir(3)
  !
+ call timing('issue1',OPR='start')
  field_dir=Dip%q0/v_norm(Dip%q0)*q0_def_norm
+ call timing('issue1',OPR='stop')
  !
  isave     = 0
+ call timing('issue2',OPR='start')
  n_poles   = sum(bare_grid_N(1:i_cg-1))
+ call timing('issue2',OPR='stop')
+ call timing('issue3',OPR='start')
  Z_        = cONE
  Xo_res    = cZERO
+ call timing('issue3',OPR='stop')
+ call timing('memset',OPR='start')
  call devxlib_memset_d(Xo_res,cZERO)
+ call timing('memset',OPR='stop')
+ call timing('other',OPR='start')
  !
  ngrho     = Xo_scatt%ngrho
  !
@@ -76,6 +86,7 @@ subroutine X_irredux_residuals(Xen,Xk,X,Dip,i_cg,iq,Xo_res,Xo_scatt,work,lwork)
 ! AF_FIX: the above line needs a fix
  if (l_X_terminator) rhotw_save2 => work(ngrho+1:2*ngrho)
  !
+ call timing('other',OPR='stop')
  loop_bare_grid: do i_bg = 1,bare_grid_N(i_cg)
    !
    n_poles=n_poles+1

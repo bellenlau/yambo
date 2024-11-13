@@ -32,7 +32,7 @@ DEV_objects_BASE = mod_hip.o mod_hipfft.o
 objs = mod_pars.o mod_stderr.o mod_parallel.o mod_parallel_interface.o  \
        mod_com_interfcs.o mod_descriptors.o mod_com.o mod_IO.o mod_IO_interfaces.o
 #else
-DEV_objects = mod_cusolverdn_y.o mod_gpu.o 
+DEV_objects = mod_cusolverdn_y.o mod_gpu.o mod_nvtx.o
 objs = mod_pars.o mod_units.o mod_lexical_sort.o mod_stderr.o mod_openmp.o mod_memory.o mod_parallel.o mod_parallel_interface.o mod_matrix.o mod_SLK.o  \
        $(DEV_objects_BASE) mod_linear_algebra.o mod_wrapper.o mod_wrapper_omp.o mod_drivers.o mod_FFT.o\
        mod_LIVE_t.o  mod_logo.o mod_cutoff_ws.o \

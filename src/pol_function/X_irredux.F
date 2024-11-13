@@ -297,9 +297,11 @@ subroutine X_irredux(iq,what,X_par,Xen,Xk,Xw,X,Dip)
      cycle
    endif
    !
+   call timing(what//' (REDUXRES)',OPR='start')
    ! 1) First compute the residuals
    !================================
    call X_irredux_residuals(Xen,Xk,X,Dip,i_cg,iq,Xo_res_p,Xo_scatt,work,lwork)
+   call timing(what//' (REDUXRES)',OPR='stop')
    !
    ! 2) Then the frequency dependent term
    !=======================================
